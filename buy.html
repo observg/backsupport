@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Compare BackUp Lite, Standard, and Premium back support tiers.">
+    <link rel="stylesheet" href="style.css">
+    <title>BackUp Products</title>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="index.html" aria-label="BackUp home">
+            <span>Back</span><strong>Up</strong>
+        </a>
+        <nav class="site-nav" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="buy.html" aria-current="page">Products</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-hero product-hero">
+            <p class="eyebrow">Choose your support level</p>
+            <h1>Three BackUp tiers for everyday comfort, active routines, and stronger support.</h1>
+            <p>Compare the fit, feel, and support level that matches how you move through the day.</p>
+        </section>
+
+        <section class="grid-container" aria-label="BackUp product tiers">
+            <article class="product-card featured-card">
+                <div class="product-image-slot">
+                    <img src="assets/BackUp_Standard.png" alt="BackUp Standard back support brace">
+                </div>
+                <p class="tier-label">Most Balanced</p>
+                <h2>BackUp Standard</h2>
+                <p>A versatile support brace with adjustable compression for work, errands, and activity.</p>
+                <p class="price">$69.99</p>
+                <button class="buy-button" type="button" data-tier="standard">View Tier</button>
+            </article>
+            <article class="product-card">
+                <div class="product-image-slot">
+                    <img src="assets/BackUp_Lite.png" alt="BackUp Lite back support brace">
+                </div>
+                <p class="tier-label">Everyday</p>
+                <h2>BackUp Lite</h2>
+                <p>A breathable, lightweight option for daily posture support and low-profile comfort.</p>
+                <p class="price">$29.99</p>
+                <button class="buy-button" type="button" data-tier="lite">View Tier</button>
+            </article>
+            <article class="product-card">
+                <div class="product-image-slot">
+                    <img src="assets/BackUp_Premium.png" alt="BackUp Premium back support brace">
+                </div>
+                <p class="tier-label">Maximum Support</p>
+                <h2>BackUp Premium</h2>
+                <p>Advanced stability and durability for targeted lower-back support where it matters most.</p>
+                <p class="price">$99.99</p>
+                <button class="buy-button" type="button" data-tier="premium">View Tier</button>
+            </article>
+        </section>
+    </main>
+
+    <div class="modal-backdrop" id="tier-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+        <div class="tier-modal">
+            <button class="modal-close" type="button" aria-label="Close tier details">&times;</button>
+            <div class="modal-image-frame">
+                <img id="modal-image" src="assets/BackUp_Standard.png" alt="">
+            </div>
+            <p class="eyebrow" id="modal-kicker">BackUp Tier</p>
+            <h2 id="modal-title">BackUp Standard</h2>
+            <p id="modal-copy"></p>
+            <ul class="modal-list" id="modal-list"></ul>
+            <div class="modal-footer">
+                <span id="modal-price"></span>
+                <button class="cta-button modal-select" type="button">Choose This Tier</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tiers = {
+            lite: {
+                kicker: "Everyday Support",
+                title: "BackUp Lite",
+                copy: "A lean, breathable brace for daily posture awareness and light support under everyday clothing.",
+                price: "$29.99",
+                image: "assets/BackUp_Lite.png",
+                imageAlt: "BackUp Lite back support brace",
+                features: ["Lightweight fabric", "Low-profile fit", "Quick strap adjustment"]
+            },
+            standard: {
+                kicker: "Most Balanced",
+                title: "BackUp Standard",
+                copy: "A dependable all-around brace for adjustable compression, secure fit, and regular movement.",
+                price: "$69.99",
+                image: "assets/BackUp_Standard.png",
+                imageAlt: "BackUp Standard back support brace",
+                features: ["Adjustable compression", "Breathable support panels", "Secure fasteners"]
+            },
+            premium: {
+                kicker: "Maximum Support",
+                title: "BackUp Premium",
+                copy: "A stronger support tier for people who want enhanced structure, stability, and longer-wear durability.",
+                price: "$99.99",
+                image: "assets/BackUp_Premium.png",
+                imageAlt: "BackUp Premium back support brace",
+                features: ["Advanced support structure", "Durable construction", "Targeted lower-back stability"]
+            }
+        };
+
+        const modal = document.getElementById("tier-modal");
+        const modalKicker = document.getElementById("modal-kicker");
+        const modalTitle = document.getElementById("modal-title");
+        const modalCopy = document.getElementById("modal-copy");
+        const modalPrice = document.getElementById("modal-price");
+        const modalImage = document.getElementById("modal-image");
+        const modalList = document.getElementById("modal-list");
+        const closeButton = modal.querySelector(".modal-close");
+        const selectButton = modal.querySelector(".modal-select");
+
+        function openModal(tierName) {
+            const tier = tiers[tierName];
+            modalKicker.textContent = tier.kicker;
+            modalTitle.textContent = tier.title;
+            modalCopy.textContent = tier.copy;
+            modalPrice.textContent = tier.price;
+            modalImage.src = tier.image;
+            modalImage.alt = tier.imageAlt;
+            modalList.innerHTML = tier.features.map((feature) => `<li>${feature}</li>`).join("");
+            modal.hidden = false;
+            closeButton.focus();
+        }
+
+        function closeModal() {
+            modal.hidden = true;
+        }
+
+        document.querySelectorAll("[data-tier]").forEach((button) => {
+            button.addEventListener("click", () => openModal(button.dataset.tier));
+        });
+
+        closeButton.addEventListener("click", closeModal);
+        selectButton.addEventListener("click", closeModal);
+        modal.addEventListener("click", (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && !modal.hidden) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
